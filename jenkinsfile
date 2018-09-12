@@ -26,6 +26,7 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-credentials'){
                         def app = docker.build("kroshwan/testwebapp")
+                        app.push()
                     }
                 }
             }
