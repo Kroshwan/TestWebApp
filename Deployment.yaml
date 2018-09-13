@@ -26,7 +26,10 @@ kind: Service
 metadata:
   name: webapp-svc
 spec:
+  type: LoadBalancer
+  sessionAffinity: ClientIp
   ports:
   - port: 8080
+    targetPort: 80
   selector:
     app: test-web-app
