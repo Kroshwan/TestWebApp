@@ -49,8 +49,7 @@ pipeline {
                 withCredentials([azureServicePrincipal(azureServicePrincipalId)]) {
                     sh """
                         az login --service-principal -u "\$AZURE_CLIENT_ID" -p "\$AZURE_CLIENT_SECRET" -t "\$AZURE_TENANT_ID"
-                        az aks get-credentials --resource-group "${azureResourceGroup}" --name "${azureAKSCluster}"
-                        kubectl set image deployments/test-web-app webappcontainer=kroshwan/testwebapp:latest
+                        kubectl apply -f Deployment.yaml
                     """
                 }
             }
