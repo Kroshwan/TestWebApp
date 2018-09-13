@@ -1,14 +1,16 @@
 pipeline {
-    def githubUrl = 'https://github.com/Kroshwan/TestWebApp'
-    def githubBranch = 'master'
+    environment {
+        githubUrl = 'https://github.com/Kroshwan/TestWebApp'
+        githubBranch = 'master'
 
-    def dockerRegistry = 'https://registry.hub.docker.com'
-    def dockerCredentials = 'docker-credentials'
-    def dockerImage = 'kroshwan/testwebapp'
+        dockerRegistry = 'https://registry.hub.docker.com'
+        dockerCredentials = 'docker-credentials'
+        dockerImage = 'kroshwan/testwebapp'
 
-    def azureResourceGroup = 'rg_aks_tf'
-    def azureAKSCluster = 'k8s_cluster'
-    def azureServicePrincipalId = 'azureServicePrincipal'
+        azureResourceGroup = 'rg_aks_tf'
+        azureAKSCluster = 'k8s_cluster'
+        azureServicePrincipalId = 'azureServicePrincipal'
+    }
 
     agent any
     stages {    
@@ -48,7 +50,7 @@ pipeline {
                     sh """
                         az login --service-principal -u "\$AZURE_CLIENT_ID" -p "\$AZURE_CLIENT_SECRET" -t "\$AZURE_TENANT_ID"
                         az aks get-credentials --resource-group "${azureResourceGroup}" --name "${azureAKSCluster}"
-                        kubectl apply -f deployment.yaml
+                        kubectl apply -f Deployment.yaml
                     """
                 }
             }
