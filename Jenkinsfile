@@ -52,7 +52,7 @@ pipeline {
                         kubectl config unset clusters."${azureAKSCluster}"
                         az aks get-credentials --resource-group "${azureResourceGroup}" --name "${azureAKSCluster}"
                         kubectl apply -f Deployment.yaml
-                        kubectl set image deployments/test-web-app test-web-app=kroshwan/testwebapp:latest
+                        kubectl set image deployments/webapp-deploy container-pod=kroshwan/testwebapp:latest
                     """
                 }
             }
