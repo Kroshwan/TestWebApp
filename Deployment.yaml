@@ -15,7 +15,7 @@ spec:
         app: test-web-app
     spec:
       containers:
-      - name: test-web-app-container
+      - name: container-pod
         image: kroshwan/testwebapp
         imagePullPolicy: Always
         ports:
