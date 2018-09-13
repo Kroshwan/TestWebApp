@@ -50,6 +50,7 @@ pipeline {
                     sh """
                         az login --service-principal -u "\$AZURE_CLIENT_ID" -p "\$AZURE_CLIENT_SECRET" -t "\$AZURE_TENANT_ID"
                         kubectl apply -f Deployment.yaml
+                        kubectl set image deployments/test-web-app test-web-app=kroshwan/testwebapp:latest
                     """
                 }
             }
