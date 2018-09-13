@@ -16,3 +16,7 @@ spec:
     spec:
       containers:
       - name: container-pod
+        image: kroshwan/testwebapp
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
