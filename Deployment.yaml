@@ -9,8 +9,10 @@ spec:
       labels:
         app: test-web-app
     spec:
+      terminationGracePeriodSeconds: 5
       containers:
       - name: test-web-app
         image: kroshwan/testwebapp:latest
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 80
