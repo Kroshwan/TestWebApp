@@ -44,14 +44,27 @@ pipeline {
                 }
             }
         }
-        stage('Deployment AKS'){
+        stage('Deploy Dev'){
             steps {
                 withCredentials([azureServicePrincipal(azureServicePrincipalId)]) {
                     sh """
                         az login --service-principal -u "\$AZURE_CLIENT_ID" -p "\$AZURE_CLIENT_SECRET" -t "\$AZURE_TENANT_ID"
                         kubectl config unset clusters."${azureAKSCluster}"
                         az aks get-credentials --resource-group "${azureResourceGroup}" --name "${azureAKSCluster}"
-                        kubectl apply -f Deployment.yaml
+                        cat deployment.yaml | sed 's/\$ENVIRONMENT'"DEV/g" | kubectl apply -f -
+                        kubectl set image deployments/webapp-deploy container-pod=kroshwan/testwebapp:latest
+                    """
+                }
+            }
+        }
+        stage('Deploy Prod'){
+            steps {
+                withCredentials([azureServicePrincipal(azureServicePrincipalId)]) {
+                    sh """
+                        az login --service-principal -u "\$AZURE_CLIENT_ID" -p "\$AZURE_CLIENT_SECRET" -t "\$AZURE_TENANT_ID"
+                        kubectl config unset clusters."${azureAKSCluster}"
+                        az aks get-credentials --resource-group "${azureResourceGroup}" --name "${azureAKSCluster}"
+                        cat deployment.yaml | sed 's/\$ENVIRONMENT'"PROD/g" | kubectl apply -f -
                         kubectl set image deployments/webapp-deploy container-pod=kroshwan/testwebapp:latest
                     """
                 }
