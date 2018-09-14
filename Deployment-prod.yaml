@@ -25,7 +25,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: webapp-svc
-  namespace: {{NAMESPACE}}
+  namespace: prod
 spec:
   type: LoadBalancer
   sessionAffinity: ClientIP
