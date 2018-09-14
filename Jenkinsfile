@@ -52,8 +52,8 @@ pipeline {
                         kubectl config unset clusters."${azureAKSCluster}"
                         az aks get-credentials --resource-group "${azureResourceGroup}" --name "${azureAKSCluster}"
                         kubectl get ns dev || kubectl create ns dev
-                        kubectl --namespace=prod apply -f service.yaml
-                        kubectl --namespace=prod apply -f Deployment-dev.yaml
+                        kubectl --namespace=dev apply -f service.yaml
+                        kubectl --namespace=dev apply -f Deployment-dev.yaml
                     """
                 }
             }
