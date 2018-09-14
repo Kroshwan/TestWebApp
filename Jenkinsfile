@@ -51,10 +51,9 @@ pipeline {
                         az login --service-principal -u "\$AZURE_CLIENT_ID" -p "\$AZURE_CLIENT_SECRET" -t "\$AZURE_TENANT_ID"
                         kubectl config unset clusters."${azureAKSCluster}"
                         az aks get-credentials --resource-group "${azureResourceGroup}" --name "${azureAKSCluster}"
-                        cat namespace.json | sed 's/\$NAMESPACE'"DEV/g" | kubectl create -f -
-                        kubectl config set-context dev --namespace=DEV --cluster=k8s_cluster --user=clusterUser_rg_aks_tf_k8s_cluster
-                        kubectl config use-context prod
-                        cat Deployment.yaml | sed 's/\$NAMESPACE'"DEV/g" | kubectl apply -f -
+                        kubectl config set-context dev --namespace=dev
+                        kubectl config use-context dev
+                        cat Deployment.yaml | sed 's/{{NAMESPACE}}/dev/g' | kubectl apply -f -
                         kubectl set image deployments/webapp-deploy container-pod=kroshwan/testwebapp:latest
                     """
                 }
@@ -67,10 +66,9 @@ pipeline {
                         az login --service-principal -u "\$AZURE_CLIENT_ID" -p "\$AZURE_CLIENT_SECRET" -t "\$AZURE_TENANT_ID"
                         kubectl config unset clusters."${azureAKSCluster}"
                         az aks get-credentials --resource-group "${azureResourceGroup}" --name "${azureAKSCluster}"
-                        cat namespace.json | sed 's/\$NAMESPACE'"PROD/g" | kubectl create -f -
-                        kubectl config set-context prod --namespace=PROD --cluster=k8s_cluster --user=clusterUser_rg_aks_tf_k8s_cluster
+                        kubectl config set-context prod --namespace=prod
                         kubectl config use-context prod
-                        cat Deployment.yaml | sed 's/\$NAMESPACE'"PROD/g" | kubectl apply -f -
+                        cat Deployment.yaml | sed 's/{{NAMESPACE}}/prod/g' | kubectl apply -f -
                         kubectl set image deployments/webapp-deploy container-pod=kroshwan/testwebapp:latest
                     """
                 }
